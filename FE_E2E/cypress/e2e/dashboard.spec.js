@@ -6,7 +6,6 @@ describe('Dashboard', () => {
         beforeEach(() => {
             loginPage.visit();
             loginPage.login();
-            cy.wait(5000);
         })
 
         context('When devis en cours is shown', () => {
@@ -25,7 +24,6 @@ describe('Dashboard', () => {
             })
 
             it('And it should open the tab related to à encaisser card', () => {
-                //debugger
                 dashboardPage.openCard("factures en cours", "a encaisser");
             })
 

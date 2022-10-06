@@ -14,7 +14,7 @@ class DashboardPage {
                         this._confirm().click();
                         break;
                     default:
-                        throw Error("Unkown card.")
+                        throw Error("unknown card.")
                 }
                 break;
 
@@ -32,11 +32,11 @@ class DashboardPage {
                         cy.xpandAndOpenTab("12", "button[label='Confirmer']");
                         break;
                     default:
-                        throw Error("Unkown card.")
+                        throw Error("unknown card.")
                 }
                 break;
             default:
-                throw Error("Unkown frame.")
+                throw Error("unknown frame.")
         }
     }
 
