@@ -1,0 +1,6 @@
+
+npx cypress run --record false  --key 7bf160c1-8079-4b8f-ace3-a1279d196a8a
+npx cypress run --record --key 7bf160c1-8079-4b8f-ace3-a1279d196a8a --browser chrome
+
+https://dashboard.cypress.io/projects/bh5vaa/runs/1/test-results/aa2109a0-1557-4615-ad3e-adfb473ebb10
+https://www.browserstack.com/

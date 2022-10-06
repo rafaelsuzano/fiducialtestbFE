@@ -1,0 +1,52 @@
+// ***********************************************
+// This example commands.js shows you how to
+// create various custom commands and overwrite
+// existing commands.
+//
+// For more comprehensive examples of custom
+// commands please read more here:
+// https://on.cypress.io/custom-commands
+// ***********************************************
+//
+//
+// -- This is a parent command --
+// Cypress.Commands.add('login', (email, password) => { ... })
+//
+//
+// -- This is a child command --
+// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
+//
+//
+// -- This is a dual command --
+// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
+//
+//
+// -- This will overwrite an existing command --
+// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+//https://blog.mimacom.com/e2e-tests-with-cypress/
+
+
+
+
+
+
+Cypress.Commands.add('login', () => {
+    cy.visit('https://qa.yesaccount.com/login')
+    
+    cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/div[1]/fiducial-input/div/input')
+    .type('fiducial@fiducial.net');
+
+    cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/fiducial-input/div/input')
+    .type('1234') ;
+
+    cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/div[2]/button')
+    .click();
+ 
+  })
+  
+
+
+
+
+
