@@ -26,25 +26,33 @@
 
 //https://blog.mimacom.com/e2e-tests-with-cypress/
 
-
-
-
-
-
 Cypress.Commands.add('login', () => {
-    cy.visit('https://qa.yesaccount.com/login')
-    
-    cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/div[1]/fiducial-input/div/input')
+  cy.visit('https://qa.yesaccount.com/login')
+
+  cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/div[1]/fiducial-input/div/input')
     .type('fiducial@fiducial.net');
 
-    cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/fiducial-input/div/input')
-    .type('1234') ;
+  cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/fiducial-input/div/input')
+    .type('1234');
 
-    cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/div[2]/button')
+  cy.xpath('/html/body/fiducial-root/fiducial-erp-login/div/div/p-card/div/div/div/fiducial-erp-login-form/form/div[2]/button')
     .click();
- 
-  })
-  
+
+})
+
+Cypress.Commands.add('xpandAndOpenTab', (index, confirm) => {
+  let expand = cy.xpath('(//fiducial-status-card-expandable//div)[' + index + ']');
+  expand.click();
+  cy.get('fiducial-status-card-expandable-item div span')
+    .each((element) => {
+      cy.get(element).click();
+      cy.get(confirm).click();
+      expand.click();
+    })
+})
+
+
+
 
 
 

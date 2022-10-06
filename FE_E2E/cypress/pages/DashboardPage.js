@@ -6,46 +6,43 @@ class DashboardPage {
                 switch (card) {
                     case "en preparation":
                         cy.get('fiducial-quotes-in-progress div div:nth-child(2) fiducial-status-card span')
-                        .invoke('removeAttr', 'target')
-                        .click()
-                        this._confirm();
+                            .click()
+                        this._confirm().click();
                         break;
                     case "envoyes":
                         cy.get('fiducial-quotes-in-progress div div:nth-child(3) fiducial-status-card span').click();
-                        this._confirm();
+                        this._confirm().click();
                         break;
                     default:
-                        console.error("Unkown card.");
+                        throw Error("Unkown card.")
                 }
                 break;
 
             case "factures en cours":
                 switch (card) {
                     case "en preparation":
-                        cy.get('fiducial-invoices-in-progress div div fiducial-status-card span').click();
-                        this._confirm();
+                        var el = cy.get('fiducial-invoices-in-progress div div fiducial-status-card span');
+                        el.click();
+                        this._confirm().click();
                         break;
                     case "a encaisser":
-                        cy.xpath("//*[contains(text(),'ENCAISSER')]/../div[2]/button/span").click();
-                        cy.get('fiducial-status-card-expandable-item span').each(x => x.cy.click)
+                        cy.xpandAndOpenTab("6", "button[label='Confirmer']");                      
                         break;
                     case "en retard":
-                        cy.xpath("//*[contains(text(),'RETARD')]/../div[2]/button/span").click();
-                        cy.get('fiducial-status-card-expandable-item span').each(x => x.cy.click)
+                        cy.xpandAndOpenTab("12", "button[label='Confirmer']");
                         break;
                     default:
-                        console.error("Unkown card.");
+                        throw Error("Unkown card.")
                 }
                 break;
             default:
-                console.error("Unkown frame.");
+                throw Error("Unkown frame.")
         }
     }
 
     _confirm() {
-        const button = cy.get("button[label='Confirmer']");
-        button.click();
-      }
+        return cy.get("button[label='Confirmer']");
+    }
 }
 
 export default new DashboardPage;

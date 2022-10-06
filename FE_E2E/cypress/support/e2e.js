@@ -19,4 +19,13 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
+import loginPage from '../pages/LoginPage'
 require('cypress-xpath')
+
+module.exports = (on, config) => {
+    return {
+        browsers: config.browsers.filter(
+            (b) => b.family === 'chromium')
+    }
+}
+
