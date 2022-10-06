@@ -40,7 +40,7 @@ Cypress.Commands.add('login', () => {
 
 })
 
-Cypress.Commands.add('xpandAndOpenTab', (index, confirm) => {
+Cypress.Commands.add('expandAndOpenTab', (index, confirm) => {
   let expand = cy.xpath('(//fiducial-status-card-expandable//div)[' + index + ']');
   expand.click();
   cy.get('fiducial-status-card-expandable-item div span')

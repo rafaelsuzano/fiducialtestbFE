@@ -26,10 +26,10 @@ class DashboardPage {
                         this._confirm().click();
                         break;
                     case "a encaisser":
-                        cy.xpandAndOpenTab("6", "button[label='Confirmer']");                      
+                        cy.expandAndOpenTab("6", "button[label='Confirmer']");                      
                         break;
                     case "en retard":
-                        cy.xpandAndOpenTab("12", "button[label='Confirmer']");
+                        cy.expandAndOpenTab("12", "button[label='Confirmer']");
                         break;
                     default:
                         throw Error("unknown card.")
