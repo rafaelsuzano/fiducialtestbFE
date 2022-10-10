@@ -26,7 +26,7 @@ class DashboardPage {
                         this._confirm().click();
                         break;
                     case "a encaisser":
-                        cy.expandAndOpenTab("6", "button[label='Confirmer']");                      
+                        cy.expandAndOpenTab("6", "button[label='Confirmer']");
                         break;
                     case "en retard":
                         cy.expandAndOpenTab("12", "button[label='Confirmer']");
@@ -42,6 +42,14 @@ class DashboardPage {
 
     _confirm() {
         return cy.get("button[label='Confirmer']");
+    }
+
+    fiducialConsulting() {
+        return cy.get("div[class^='companies'] button span")
+    }
+
+    menuItems() {
+        return cy.get("ul li a span")
     }
 }
 
