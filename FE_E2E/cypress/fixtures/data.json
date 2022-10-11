@@ -3,11 +3,5 @@
         "email": "fiducial@fiducial.net",
         "password": "1234",
         "loginPassed": " FIDUCIAL CONSULTING "
-    },
-    "TC_YV2B_3532": {
-        "salutation": "madame",
-        "firstName": "Test ",
-        "email": "fiducial@fiducial.net",
-        "clientCode": "12345678"
     }
 }

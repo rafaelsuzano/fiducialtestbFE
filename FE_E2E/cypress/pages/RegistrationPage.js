@@ -97,17 +97,17 @@ class RegistrationPage {
     }
 
     provideClienteInfo(data) {
-        this.#elements.infoClientForm.name().type(data.TC_YV2B_3532.firstName);
-        this.#elements.infoClientForm.surname().type("latname");
-        this.#elements.infoClientForm.email().type(data.TC_YV2B_3532.email);
-        this.#elements.infoClientForm.telephone().type("111111111");
-        this.#elements.infoClientForm.secondaryPhone().type("222222222");
+        this.#elements.infoClientForm.name().type(data.firstName);
+        this.#elements.infoClientForm.surname().type(data.lastName);
+        this.#elements.infoClientForm.email().type(data.email);
+        this.#elements.infoClientForm.telephone().type(data.firstPhone);
+        this.#elements.infoClientForm.secondaryPhone().type(data.secondPhone);
     }
 
     provideRequeredInfo(data){
         this.#elements.requiredForm.expandPaymentDelay().click({force: true});
-        this.#elements.requiredForm.items().contains("30 jours").click();
-        this.#elements.requiredForm.clientReference().type("")
+        this.#elements.requiredForm.items().contains("120 jours").click();
+        this.#elements.requiredForm.clientReference().type(data.clientCode)
     }
 
 }
