@@ -10,10 +10,9 @@ class LoginPage {
             .then(x => {
                 cy.get("input[type='text']").type(x.credential.email);
                 cy.get("input[type='password']").type(x.credential.password);
+                cy.get("button[type='submit']").click();
                 cy.contains("div[class^='companies'] button span", x.credential.loginPassed)
             })
-
-        cy.get("button[type='submit']").click();
     }
 }
 

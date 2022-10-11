@@ -51,6 +51,10 @@ class DashboardPage {
     menuItems() {
         return cy.get("ul li a span")
     }
+
+    accessMenu(item){
+        cy.get("ul li a span").contains(item).click();
+    }
 }
 
 export default new DashboardPage;

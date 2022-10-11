@@ -1,5 +1,0 @@
-class ClientPage extends clientMap {
-   
-    
-
-}
