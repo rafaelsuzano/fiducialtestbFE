@@ -1,5 +1,5 @@
 
-class RegistrationPage {
+class AddClientPage {
 
     #elements = {
         createBtn: () => cy.get("div[class^='button-create'] button"),
@@ -12,11 +12,9 @@ class RegistrationPage {
             autre: () => cy.get("div[class='formgroup-inline'] div:nth-child(5) p-radiobutton:nth-child(1)")
         },
         continueBtn: () => cy.get("button[label='Continuer']"),
-        salutationType: {
-            madame: () => cy.get("input[id='madame']"),
-            monsieur: () => cy.get("input[id='monsieur']"),
-        },
         infoClientForm: {
+            madame: () => cy.get("fiducial-client-particular-info-form p-radiobutton:nth-child(1) div:nth-child(2)"),
+            monsieur: () => cy.get("fiducial-client-particular-info-form p-radiobutton:nth-child(3) div:nth-child(2)"),
             name: () => cy.get("input[id='name']"),
             surname: () => cy.get("input[id='surname']"),
             email: () => cy.get("input[id='email']"),
@@ -32,8 +30,8 @@ class RegistrationPage {
             clientReference: () => cy.get("input[id=clientReference]")
         },
         billingContactForm: {
-            madame: () => cy.get("fiducial-contact-form p-radiobutton:nth-child(1)"),
-            monsieur: () => cy.get("fiducial-contact-form p-radiobutton:nth-child(1)"),
+            madame: () => cy.get("fiducial-contact-form p-radiobutton:nth-child(1) div:nth-child(2)"),
+            monsieur: () => cy.get("fiducial-contact-form p-radiobutton:nth-child(3) div:nth-child(2)"),
             name: () => cy.get("[salutationformcontrolname='salutationBillingContact'] [formcontrolname='name'] input"),
             surname: () => cy.get("[salutationformcontrolname='salutationBillingContact'] [formcontrolname='surname'] input"),
             department: () => cy.get("[formcontrolname='department'] div input"),
@@ -46,15 +44,62 @@ class RegistrationPage {
             addressExtention: () => cy.get("fiducial-input[formcontrolname='zone'] input"),
             postalCode: () => cy.get("fiducial-input[formcontrolname='postalCode'] input"),
             city: () => cy.get("fiducial-input[formcontrolname='city'] input"),
-            country: () => cy.get("#pr_id_5_label"),
-            contries: () => cy.get("p-dropdownitem li span")
-        }
+            expandCountry: () => cy.get("fiducial-address-form p-dropdown"),
+            contries: () => cy.get("ul[role='listbox'] li span")
+        },
+        result: () => cy.get("h2:last-of-type")
     }
 
+    fillClientForm(data) {
+        this.clickOnCreateBtn();
+        this.selectClientType(data.clientInfo.clientType);
+        this.clickOnContinueBtn();
+        this.salutationClientType(data.billingContact.greeting);
+        this.#elements.infoClientForm.name().type(data.clientInfo.firstName);
+        this.#elements.infoClientForm.surname().type(data.clientInfo.lastName);
+        this.#elements.infoClientForm.email().type(data.clientInfo.email);
+        this.#elements.infoClientForm.telephone().type(data.clientInfo.firstPhone);
+        this.#elements.infoClientForm.secondaryPhone().type(data.clientInfo.secondPhone);
+        this.#fillRequeredForm(data);
+        this.salutationBillingType(data.billingContact.greeting);
+        this.#fillBillingContactForm(data);
+        this.#fillBillingAddress(data);
+        this.#elements.sauvegarderBtn().click();
+        return this.#elements.result();
+    }
+
+    #fillRequeredForm(data) {
+        this.#elements.requiredForm.expandPaymentDelay().click({ force: true });
+        this.#elements.requiredForm.items().contains(data.requiredInfo.delay).click();
+        this.#elements.requiredForm.clientReference().type(data.requiredInfo.clientCode)
+    }
+
+    #fillBillingContactForm(data) {
+        this.#elements.billingContactForm.name().type(data.billingContact.name);
+        this.#elements.billingContactForm.surname().type(data.billingContact.surname);
+        this.#elements.billingContactForm.department().type(data.billingContact.department);
+        this.#elements.billingContactForm.email().type(data.billingContact.email);
+        this.#elements.billingContactForm.mobile().type(data.billingContact.mobile);
+    }
+
+    #fillBillingAddress(data) {
+        this.#elements.billingAddressForm.number().type(data.billingAddress.number);
+        this.#elements.billingAddressForm.address().type(data.billingAddress.address);
+        this.#elements.billingAddressForm.addressExtention().type(data.billingAddress.extention);
+        this.#elements.billingAddressForm.postalCode().type(data.billingAddress.zipCode);
+        this.#elements.billingAddressForm.city().type(data.billingAddress.city);
+        this.#elements.billingAddressForm.expandCountry().click();
+        this.#elements.billingAddressForm.contries().
+            contains(data.billingAddress.country, { matchCase: false }).click();
+    }
 
     clickOnCreateBtn() {
         this.#elements.createBtn().click();
         this.#elements.clientBtn().click();
+    }
+
+    clickOnContinueBtn() {
+        this.#elements.continueBtn().click();
     }
 
     selectClientType(key) {
@@ -79,37 +124,31 @@ class RegistrationPage {
         }
     }
 
-    salutationType(key) {
+    salutationClientType(key) {
         switch (key) {
             case "madame":
-                this.#elements.salutationType.madame().click();
+                this.#elements.infoClientForm.madame().click({ force: true });
                 break;
             case "monsieur":
-                this.#elements.salutationType.monsieur().click();
+                this.#elements.infoClientForm.monsieur().click({ force: true });
                 break;
             default:
                 throw Error("Unknown client type.");
         }
     }
 
-    clickOnContinueBtn() {
-        this.#elements.continueBtn().click();
+    salutationBillingType(key) {
+        switch (key) {
+            case "madame":
+                this.#elements.billingContactForm.madame().click({ force: true });
+                break;
+            case "monsieur":
+                this.#elements.billingContactForm.monsieur().click({ force: true });
+                break;
+            default:
+                throw Error("Unknown billing type.");
+        }
     }
-
-    provideClienteInfo(data) {
-        this.#elements.infoClientForm.name().type(data.firstName);
-        this.#elements.infoClientForm.surname().type(data.lastName);
-        this.#elements.infoClientForm.email().type(data.email);
-        this.#elements.infoClientForm.telephone().type(data.firstPhone);
-        this.#elements.infoClientForm.secondaryPhone().type(data.secondPhone);
-    }
-
-    provideRequeredInfo(data){
-        this.#elements.requiredForm.expandPaymentDelay().click({force: true});
-        this.#elements.requiredForm.items().contains("120 jours").click();
-        this.#elements.requiredForm.clientReference().type(data.clientCode)
-    }
-
 }
 
-export default new RegistrationPage;
+export default new AddClientPage;

@@ -1,7 +1,7 @@
 
 //https://track.yesaccount.fr/issue/YV2B-3532
 
-import registration from '../pages/RegistrationPage'
+import addClientPage from '../pages/AddClientPage'
 import clientFactory from '../factories/clientFactory'
 
 
@@ -11,26 +11,21 @@ describe('Add two clients', () => {
 
         beforeEach(() => {
             cy
-            .fixture('data')
-            .then(x => {
-                cy.login(x);
-            })
+                .fixture('data')
+                .then(data => {
+                    cy.login(data);
+                })
         })
 
         context('User successfully adds a specific client', () => {
             it('Then client should be added successfully', () => {
-                var clientData = clientFactory.registration();                
+                var data = clientFactory.particulier();
                 cy.accessMenu("Clients");
-                registration.clickOnCreateBtn();
-                registration.selectClientType("particulier");
-                registration.clickOnContinueBtn(); 
-                registration.provideClienteInfo(clientData);
-                registration.provideRequeredInfo(clientData);
+                addClientPage.fillClientForm(data)
+                .scrollIntoView()
+                .invoke("text")
+                .should('eq', data.result);
             })
-
-
         })
-
-
     })
 })
