@@ -1,17 +1,24 @@
 class LoginPage {
 
-    visit() {
-        cy.visit('/');
+    #elements = {
+        email: () => cy.get("input[type='text']"),
+        password: () => cy.get("input[type='password']"),
+        submit: () => cy.get("button[type='submit']"),
+        summary: () => cy.get(".p-toast-summary"),
+        detail: () => cy.get(".p-toast-detail")
     }
 
-    login() {
+    incorrectPassword() {
+        cy.visit('/');
         cy
             .fixture('data')
             .then(x => {
-                cy.get("input[type='text']").type(x.credential.email);
-                cy.get("input[type='password']").type(x.credential.password);
-                cy.get("button[type='submit']").click();
-                cy.contains("div[class^='companies'] button span", x.credential.loginPassed)
+                console.log("Login --> " + x.incorrectPassword.email)
+                this.#elements.email().type(x.incorrectPassword.email);
+                this.#elements.password().type(x.incorrectPassword.password);
+                this.#elements.submit().click();
+                this.#elements.summary().should('contain', x.incorrectPassword.summary);
+                this.#elements.detail().should('contain', x.incorrectPassword.detail)
             })
     }
 }

@@ -35,5 +35,36 @@ export default {
             },
             expectedResult: `${name} ${surname}`
         }
+    },
+
+    entreprise: () => {
+        return {
+            clientInfo: {
+                siren: '328084074',
+                clientType: 'entreprise',
+                email: 'fiducial@fiducial.net',
+                firstPhone: '33-700-555-102',
+                secondPhone: '33-655-525-489',
+            },
+            requiredInfo: {
+                delay: '60 jours',
+            },
+            billingContact: {
+                greeting: 'monsieur',
+                name: 'Jean-Marc',
+                surname: 'Dupont',
+                mobile: '0612345678',
+                email: 'test@gmail.com',
+                department: 'QA'
+            },
+            billingAddress: {
+                number: '2',
+                address: 'rue charles de gaulle',
+                extention: 'IT',
+                zipCode: '33000',
+                city: 'Bordeaux',
+                country: 'france'
+            }
+        }
     }
 }

@@ -44,18 +44,20 @@ class AddClientPage {
             addressExtention: () => cy.get("fiducial-input[formcontrolname='zone'] input"),
             postalCode: () => cy.get("fiducial-input[formcontrolname='postalCode'] input"),
             city: () => cy.get("fiducial-input[formcontrolname='city'] input"),
-            expandCountry: () => cy.get("fiducial-address-form p-dropdown"),
+            expandCountry: () => cy.get("fiducial-address-form p-dropdown div:nth-child(3)"),
             contries: () => cy.get("ul[role='listbox'] li span")
         },
         header: () => cy.get("h2:last-of-type"),
         searchTxt: () => cy.get("fiducial-search-input input"),
-        invoiceSaved: () => cy.get("table tbody tr td:nth-child(2) strong")
+        invoiceSaved: () => cy.get("table tbody tr td:nth-child(2) strong"),
+        sirenInput: () => cy.get("fiducial-client-enterprise-siren-finder input"),
+        sirenSelection: () => cy.get("fiducial-client-enterprise-siret-selection .pb-1")
     }
 
-    fillClientForm(data) {
+    fillParticulierForm(data) {
         this.clickOnCreateBtn();
         this.selectClientType(data.clientInfo.clientType);
-        this.clickOnContinueBtn();
+        this.#elements.continueBtn().click();
         this.salutationClientType(data.billingContact.greeting);
         this.#elements.infoClientForm.name().type(data.clientInfo.firstName);
         this.#elements.infoClientForm.surname().type(data.clientInfo.lastName);
@@ -69,6 +71,22 @@ class AddClientPage {
         this.#elements.sauvegarderBtn().click();
         this.#elements.searchTxt().type(data.clientInfo.firstName);
         return this.#elements.invoiceSaved();
+    }
+
+    fillEntrepriseForm(data){
+        this.clickOnCreateBtn();
+        this.fillEntrepriseModal(data);
+        this.#elements.infoClientForm.email().type(data.clientInfo.email);
+        this.salutationBillingType(data.billingContact.greeting);
+        this.#fillBillingContactForm(data);
+        this.#fillBillingAddress(data);
+        this.#elements.continueBtn().click();
+    }
+
+    fillEntrepriseModal(data) {
+        this.#elements.sirenInput().type(data.clientInfo.siren);
+        this.#elements.sirenSelection().then($el => { expect($el[0].getAttribute('class')).to.exist; })
+        this.#elements.continueBtn().click();
     }
 
     #fillRequeredForm(data) {
@@ -91,7 +109,7 @@ class AddClientPage {
         this.#elements.billingAddressForm.addressExtention().type(data.billingAddress.extention);
         this.#elements.billingAddressForm.postalCode().type(data.billingAddress.zipCode);
         this.#elements.billingAddressForm.city().type(data.billingAddress.city);
-        this.#elements.billingAddressForm.expandCountry().click();
+        this.#elements.billingAddressForm.expandCountry().click({ force: true });
         this.#elements.billingAddressForm.contries().
             contains(data.billingAddress.country, { matchCase: false }).click();
     }
@@ -99,10 +117,6 @@ class AddClientPage {
     clickOnCreateBtn() {
         this.#elements.createBtn().click();
         this.#elements.clientBtn().click();
-    }
-
-    clickOnContinueBtn() {
-        this.#elements.continueBtn().click();
     }
 
     selectClientType(key) {

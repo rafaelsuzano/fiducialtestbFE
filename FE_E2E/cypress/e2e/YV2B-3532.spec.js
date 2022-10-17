@@ -18,10 +18,10 @@ describe('Add two clients', () => {
         })
 
         context('User successfully adds a specific client', () => {
-            it('Then client should be added successfully', () => {
+            it('Then the particulier client should be added successfully', () => {
                 var data = clientFactory.particulier();
                 cy.accessMenu("Clients");
-                addClientPage.fillClientForm(data)
+                addClientPage.fillParticulierForm(data)
                     .each(($el, index, arr) => {
                         arr.push($el.text().toLowerCase());
                     }).then((arr) => {
@@ -29,5 +29,13 @@ describe('Add two clients', () => {
                 })
             })
         })
+
+        // context('User successfully adds an entreprise client', () => {
+        //     it('Then the entreprise client should be added successfully', () => {
+        //         var data = clientFactory.entreprise();
+        //         cy.accessMenu("Clients");
+        //         addClientPage.fillEntrepriseForm(data);
+        //     })
+        // })
     })
 })
