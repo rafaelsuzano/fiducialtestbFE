@@ -4,16 +4,16 @@
 import addClientPage from '../pages/AddClientPage'
 import clientFactory from '../factories/clientFactory'
 
-
 describe('Add two clients', () => {
 
     context('Given that user successfully signed up', () => {
-
         beforeEach(() => {
             cy
                 .fixture('data')
                 .then(data => {
-                    cy.login(data);
+                    cy.login(data)
+                        .invoke('text')
+                        .should('eq', data.credential.loginPassed);
                 })
         })
 
@@ -22,9 +22,11 @@ describe('Add two clients', () => {
                 var data = clientFactory.particulier();
                 cy.accessMenu("Clients");
                 addClientPage.fillClientForm(data)
-                .scrollIntoView()
-                .invoke("text")
-                .should('eq', data.result);
+                    .each(($el, index, arr) => {
+                        arr.push($el.text().toLowerCase());
+                    }).then((arr) => {
+                        expect(arr.toArray()).includes(data.expectedResult.toLowerCase())
+                })
             })
         })
     })

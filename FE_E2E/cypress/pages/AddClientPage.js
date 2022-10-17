@@ -47,7 +47,9 @@ class AddClientPage {
             expandCountry: () => cy.get("fiducial-address-form p-dropdown"),
             contries: () => cy.get("ul[role='listbox'] li span")
         },
-        result: () => cy.get("h2:last-of-type")
+        header: () => cy.get("h2:last-of-type"),
+        searchTxt: () => cy.get("fiducial-search-input input"),
+        invoiceSaved: () => cy.get("table tbody tr td:nth-child(2) strong")
     }
 
     fillClientForm(data) {
@@ -65,13 +67,14 @@ class AddClientPage {
         this.#fillBillingContactForm(data);
         this.#fillBillingAddress(data);
         this.#elements.sauvegarderBtn().click();
-        return this.#elements.result();
+        this.#elements.searchTxt().type(data.clientInfo.firstName);
+        return this.#elements.invoiceSaved();
     }
 
     #fillRequeredForm(data) {
         this.#elements.requiredForm.expandPaymentDelay().click({ force: true });
         this.#elements.requiredForm.items().contains(data.requiredInfo.delay).click();
-        this.#elements.requiredForm.clientReference().type(data.requiredInfo.clientCode)
+        // this.#elements.requiredForm.clienteCode().type(data.requiredInfo.clientCode)
     }
 
     #fillBillingContactForm(data) {

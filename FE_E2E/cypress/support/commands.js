@@ -60,7 +60,7 @@ Cypress.Commands.add('login', (data) => {
   cy.get("input[type='text']").type(data.credential.email)
   cy.get("input[type='password']").type(data.credential.password)
   cy.get("button[type='submit']").click()
-  cy.get("div[class^='companies'] button span").contains(data.credential.loginPassed)
+  return cy.get("div[class^='companies'] button span");
 })
 
 

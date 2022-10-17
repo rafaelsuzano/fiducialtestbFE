@@ -33,8 +33,7 @@ export default {
                 city: 'Nice',
                 country: 'france'
             },
-            result: " "+`${name} ${surname}`+" "
-
+            expectedResult: `${name} ${surname}`
         }
     }
 }
