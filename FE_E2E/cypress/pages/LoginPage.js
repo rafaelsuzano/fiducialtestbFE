@@ -8,17 +8,16 @@ class LoginPage {
         detail: () => cy.get(".p-toast-detail")
     }
 
-    incorrectPassword() {
+    invalidPassword() {
         cy.visit('/');
         cy
             .fixture('data')
             .then(x => {
-                console.log("Login --> " + x.incorrectPassword.email)
-                this.#elements.email().type(x.incorrectPassword.email);
-                this.#elements.password().type(x.incorrectPassword.password);
+                this.#elements.email().type(x.credential.email);
+                this.#elements.password().type(x.invalidPassword.password);
                 this.#elements.submit().click();
-                this.#elements.summary().should('contain', x.incorrectPassword.summary);
-                this.#elements.detail().should('contain', x.incorrectPassword.detail)
+                this.#elements.summary().should('contain', x.invalidPassword.summary);
+                this.#elements.detail().should('contain', x.invalidPassword.detail)
             })
     }
 }
