@@ -17,8 +17,12 @@ class LoginPage {
                 this.#elements.password().type(x.invalidPassword.password);
                 this.#elements.submit().click();
                 this.#elements.summary().should('contain', x.invalidPassword.summary);
-                this.#elements.detail().should('contain', x.invalidPassword.detail)
+                getDetailMessage().should('contain', x.invalidPassword.detail)
             })
+    }
+
+    getDetailMessage(){
+        return this.#elements.detail();
     }
 }
 

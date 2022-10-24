@@ -118,6 +118,10 @@ class AddClientPage {
         this.#elements.clientBtn().click();
     }
 
+    saveModal(){
+        this.#elements.sauvegarderBtn().click();
+    }
+
     selectClientType(key) {
         switch (key) {
             case "entreprise":
