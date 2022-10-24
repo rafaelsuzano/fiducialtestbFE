@@ -51,6 +51,18 @@ Cypress.Commands.add('expandAndOpenTab', (index, confirm) => {
     })
 })
 
+Cypress.Commands.add('accessMenu', (menuItem) => {
+  cy.get("ul li a span").contains(menuItem).click();
+})
+
+Cypress.Commands.add('login', (data) => {
+  cy.visit('/')
+  cy.get("input[type='text']").type(data.credential.email)
+  cy.get("input[type='password']").type(data.credential.password)
+  cy.get("button[type='submit']").click()
+  return cy.get("div[class^='companies'] button span");
+})
+
 
 
 

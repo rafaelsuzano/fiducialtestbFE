@@ -1,0 +1,15 @@
+export default {
+
+    article: () => {
+        var code = `E2E${Cypress._.random(0, 1e3)}`
+        return {
+            productDescription: 'Cisco WiFi Router',
+            type: 'produit',
+            measure: '㎡',
+            articleCode: code,
+            amount: '200',
+            description: 'E2E Script',
+            articleFamily: 'MATERIEL INFORMATIQUE'
+        }
+    }
+}
