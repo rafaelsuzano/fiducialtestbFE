@@ -53,6 +53,7 @@ Cypress.Commands.add('expandAndOpenTab', (index, confirm) => {
 
 Cypress.Commands.add('accessMenu', (menuItem) => {
   cy.get("ul li a span").contains(menuItem).click();
+  cy.wait(500);
 })
 
 Cypress.Commands.add('login', (data) => {

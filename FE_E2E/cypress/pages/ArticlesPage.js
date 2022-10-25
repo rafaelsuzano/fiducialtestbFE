@@ -1,4 +1,4 @@
-import addClientPage from '../pages/AddClientPage'
+import clientPage from './ClientPage'
 
 class ArticlesPage {
 
@@ -14,32 +14,44 @@ class ArticlesPage {
         montantInput: () => cy.get("input[id='montant-ht']"),
         description: () => cy.get("[formcontrolname='description']"),
         articleFamily: () => cy.get("fiducial-article-families-selection fiducial-search-input input"),
-        selectFamily: () => cy.get("#pr_id_20-table tbody td span")
+        selectFamily: () => cy.get("cdk-virtual-scroll-viewport table tbody td span"),
+        result: () => cy.get("table tbody tr td:nth-child(3) strong")
     }
 
     addArticle(data) {
-        addClientPage.clickOnCreateBtn();
-        this.articleType(data.article.type);
-        this.elements.designationInput().type(data.article.productDescription);
-        this.elements.expandItems().click();
+        this.fillArticle(data)
+        .each(($el, index, arr) => {
+            arr.push($el.text().toLowerCase());
+        }).then((arr) => {
+            expect(arr.toArray()).includes(data.articleCode.toLowerCase())
+        })
+    }
+
+    fillArticle(data) {
+        clientPage.clickOnCreateBtn();
+        this.articleType(data.type);
+        this.elements.designationInput().type(data.productDescription);
+        this.elements.expandItems().first().click();
         this.elements.selectItems().
-            contains(data.article.measure, { matchCase: false }).click();
-        this.elements.codeInput().type(data.article.code);
-        this.elements.montantInput().type(data.article.amount);
-        this.elements.description().type(data.article.description);
-        this.elements.articleFamily().click();
+            contains(data.measure, { matchCase: false }).click();
+        this.elements.codeInput().type(data.articleCode);
+        this.elements.montantInput().type(data.amount);
+        this.elements.description().type(data.description);
+        this.elements.articleFamily().type(data.articleFamily);
         this.elements.selectFamily().
-            contains(data.article.articleFamily, { matchCase: false }).click();
-        addClientPage.saveModal();
+            contains(data.articleFamily, { matchCase: false }).click();
+        clientPage.saveModal();
+        clientPage.searchItem(data.articleCode);
+        return this.elements.result();
     }
 
     articleType(key) {
         switch (key) {
             case "produit":
-                this.#elements.clientType.productType().click();
+                this.elements.articleType.productType().click();
                 break;
             case "service":
-                this.#elements.clientType.serviceType().click();
+                this.elements.articleType.serviceType().click();
                 break;
             default:
                 throw Error("Unknown article type.");
