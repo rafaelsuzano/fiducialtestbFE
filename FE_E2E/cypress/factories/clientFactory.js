@@ -1,7 +1,7 @@
 export default {
 
     particulier: () => {
-        var name = `Test${Cypress._.random(0, 1e3)}`
+        var name = `Test${Cypress._.random(0, 1e6)}`
         var surname = 'E2E';
         return {
             clientInfo: {

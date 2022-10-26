@@ -16,46 +16,49 @@ class FacturesPage {
             factureAvoir: () => cy.get("fiducial-invoice-type p-radiobutton[label*='Avoir'] div div:nth-child(2)")
         },
         devisAssocierInput: () => cy.get("fiducial-search-input:nth-child(3) input"),
+        devisAssocierItem: () => cy.get("p-table cdk-virtual-scroll-viewport table tbody td strong:nth-child(1)"),
+        articleAssocierInput: () => cy.get("fiducial-search-input:nth-child(2) input"),
+        selectArticle: () => cy.get("cdk-virtual-scroll-viewport table tbody td span"),
+        articleCodeLabel: () => cy.get("fiducial-articles-line-item input:nth-child(2)"),
         factureAssocierInput: () => cy.get("fiducial-invoice-selection-single fiducial-search-input input"),
         invoicesTableResult: () => cy.get("fiducial-associated-invoices-list table tbody tr td strong"),
         unitPriceInput: () => cy.get("fiducial-articles-line-item [class^='grid p-fluid'] div:nth-child(3) p-inputnumber"),
-        envoyerBtn: () => cy.get("button[label='Envoyer']")
+        envoyerBtn: () => cy.get("button[label='Envoyer']"),
+        submitBtn: () => cy.get("button[label='Suivant']")
     }
 
-    validateWarningMessage(client, article, data) {
-        this.elements.createBtn().click();
+    validateWarningMessage(data, client, article) {
+        this.elements.createBtn().click({ force: true });
         this.elements.searchClientInput().type(client);
-        this.elements.dropDownItems().
-            contains(client + " E2E", { matchCase: false }).click();
+        this.elements.dropDownItems().first().click({ force: true });
         this.documentType(data.documentType);
-        this.elements.devisAssocierInput().type(article);
-        this.elements.dropDownItems().
-            contains(article, { matchCase: false }).click();
+        this.elements.devisAssocierInput().click({ force: true });
+        this.elements.devisAssocierItems().click({ force: true });
         this.validateInvoiceResult(article);
-        this.elements.unitPriceInput().type(data.amout);
+        this.elements.unitPriceInput().type(data.amount);
         clientPage.saveModal();
-        return loginPage.getDetailMessage();
+        loginPage.getDetailMessage()
+            .invoke('text')
+            .should('eq', data.expectedWarningMessage);
     }
 
-    associateIncoice(article, client){       
+    associateIncoice(client, code) {
         this.elements.createBtn().click();
         this.elements.searchClientInput().type(client);
-        this.elements.dropDownItems().
-            contains(client + " E2E", { matchCase: false }).click();
-        this.documentType("simple");
-        this.elements.devisAssocierInput().type(article);
-        this.elements.dropDownItems().
-            contains(article, { matchCase: false }).click();
+        this.elements.dropDownItems().first().click({ force: true });
+        this.elements.articleAssocierInput().last().type(code);
+        this.elements.dropDownItems().first().click({ force: true });
+        //this.elements.articleCodeLabel().first().should('be.visible');
+        this.envoyerModal();
+    }
 
-
-
-
-
-
+    envoyerModal() {
+        this.elements.envoyerBtn().click();
+        this.elements.submitBtn().click();
+        cy.xpath("(//button[@label='Envoyer'])[2]").click();
     }
 
     documentType(key) {
-        debugger
         switch (key) {
             case "simple":
                 this.elements.documentType.factureSimple().click();

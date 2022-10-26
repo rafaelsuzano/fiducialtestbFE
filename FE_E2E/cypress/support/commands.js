@@ -64,6 +64,10 @@ Cypress.Commands.add('login', (data) => {
   return cy.get("div[class^='companies'] button span");
 })
 
+Cypress.Commands.add('selectDropDownItem', (webElement, target) => {
+  webElement.contains(target, { matchCase: false }).click();
+})
+
 
 
 

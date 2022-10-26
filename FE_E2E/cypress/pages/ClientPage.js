@@ -50,7 +50,8 @@ class ClientPage {
         searchTxt: () => cy.get("fiducial-search-input input"),
         invoiceSaved: () => cy.get("table tbody tr td:nth-child(2) strong"),
         sirenInput: () => cy.get("fiducial-client-enterprise-siren-finder input"),
-        sirenSelection: () => cy.get("fiducial-client-enterprise-siret-selection .pb-1")
+        sirenSelection: () => cy.get("fiducial-client-enterprise-siret-selection .pb-1"),
+        tableNonColumn: () => cy.get("fiducial-content-state table td:nth-child(2) strong")
     }
 
     addParticulierClient(data) {
@@ -58,7 +59,7 @@ class ClientPage {
             .each(($el, index, arr) => {
                 arr.push($el.text().toLowerCase());
             }).then((arr) => {
-                expect(arr.toArray()).includes(data.expectedResult.toLowerCase())
+                expect(arr.toArray()).includes(data.expectedResult.toLowerCase());
             })
     }
 
@@ -129,6 +130,10 @@ class ClientPage {
             if ($btn.is(':visible'))
                 cy.wrap($btn).click();
         })
+    }
+
+    getClientNome(){
+        return this.#elements.tableNonColumn();
     }
 
     saveModal() {

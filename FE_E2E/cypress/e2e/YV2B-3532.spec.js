@@ -18,7 +18,7 @@ describe('Add two clients', () => {
         })
 
         context('User successfully adds a specific client', () => {
-            it.skip('Then the particulier client should be added successfully', () => {
+            it('Then the particulier client should be added successfully', () => {
                 var data = clientFactory.particulier();
                 cy.accessMenu("Clients");
                 clientPage.addParticulierCliente(data);

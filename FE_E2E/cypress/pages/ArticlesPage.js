@@ -15,16 +15,16 @@ class ArticlesPage {
         description: () => cy.get("[formcontrolname='description']"),
         articleFamily: () => cy.get("fiducial-article-families-selection fiducial-search-input input"),
         selectFamily: () => cy.get("cdk-virtual-scroll-viewport table tbody td span"),
-        result: () => cy.get("table tbody tr td:nth-child(3) strong")
+        codeResult: () => cy.get("table tbody tr td:nth-child(3) strong")
     }
 
     addArticle(data) {
         this.fillArticle(data)
-        .each(($el, index, arr) => {
-            arr.push($el.text().toLowerCase());
-        }).then((arr) => {
-            expect(arr.toArray()).includes(data.articleCode.toLowerCase())
-        })
+            .each(($el, index, arr) => {
+                arr.push($el.text().toLowerCase());
+            }).then((arr) => {
+                expect(arr.toArray()).includes(data.articleCode.toLowerCase());
+            })
     }
 
     fillArticle(data) {
@@ -42,7 +42,11 @@ class ArticlesPage {
             contains(data.articleFamily, { matchCase: false }).click();
         clientPage.saveModal();
         clientPage.searchItem(data.articleCode);
-        return this.elements.result();
+        return this.elements.codeResult();
+    }
+
+    getCode() {
+        return this.elements.codeResult();
     }
 
     articleType(key) {
