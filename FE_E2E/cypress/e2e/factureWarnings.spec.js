@@ -37,14 +37,13 @@ describe('Invoice warning message validation', () => {
                 context('And invoice is associated', () => {
                     beforeEach(() => {
                         cy.accessMenu("Factures");
-                        var factory = facturesFactory.avoirWarning();
                         facturesPage.associateIncoice(clientName, articleCode)
                     })
 
                     context('When the article unit price is greater than solde', () => {
                         it('Then it should warn the user', () => {
-                            var factory = facturesFactory.avoirWarning();
-                            facturesPage.validateWarningMessage(factory, clientName, articleCode);
+                            var inv = facturesFactory.avoirWarning();
+                            facturesPage.validateWarningMessage(inv, clientName, articleCode);
                         })
                     })
                 })
