@@ -5,7 +5,7 @@ import articleFactory from "../factories/ArticleFactory";
 import clientFactory from "../factories/clientFactory";
 import facturesFactory from "../factories/FacturesFactory";
 
-describe('Warning message', () => {
+describe('Invoice warning message validation', () => {
     let clientName, articleCode;
     context('Given that user logins', () => {
         beforeEach(() => {
@@ -41,7 +41,7 @@ describe('Warning message', () => {
                         facturesPage.associateIncoice(clientName, articleCode)
                     })
 
-                    context('When the unit price i greater tgha solde', () => {
+                    context('When the article unit price is greater than solde', () => {
                         it('Then it should warn the user', () => {
                             var factory = facturesFactory.avoirWarning();
                             facturesPage.validateWarningMessage(factory, clientName, articleCode);
