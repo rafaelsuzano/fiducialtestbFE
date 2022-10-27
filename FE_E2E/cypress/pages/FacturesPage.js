@@ -1,5 +1,3 @@
-import articlesPage from './ArticlesPage';
-import clientPage from './ClientPage'
 import loginPage from './LoginPage';
 
 class FacturesPage {
@@ -16,34 +14,38 @@ class FacturesPage {
             factureAvoir: () => cy.get("fiducial-invoice-type p-radiobutton[label*='Avoir'] div div:nth-child(2)")
         },
         devisAssocierInput: () => cy.get("fiducial-search-input:nth-child(3) input"),
-        devisAssocierItem: () => cy.get("p-table cdk-virtual-scroll-viewport table tbody td strong:nth-child(1)"),
+        devisAssocierItems: () => cy.get("p-table cdk-virtual-scroll-viewport table tbody td strong"),
         articleAssocierInput: () => cy.get("fiducial-search-input:nth-child(2) input"),
         selectArticle: () => cy.get("cdk-virtual-scroll-viewport table tbody td span"),
         articleCodeLabel: () => cy.get("fiducial-articles-line-item input:nth-child(2)"),
         factureAssocierInput: () => cy.get("fiducial-invoice-selection-single fiducial-search-input input"),
         invoicesTableResult: () => cy.get("fiducial-associated-invoices-list table tbody tr td strong"),
-        unitPriceInput: () => cy.get("fiducial-articles-line-item [class^='grid p-fluid'] div:nth-child(3) p-inputnumber"),
+        unitPriceInput: () => cy.get("[class^='grid p-fluid'] div:nth-child(3) span input"),
         envoyerBtn: () => cy.get("button[label='Envoyer']"),
-        submitBtn: () => cy.get("button[label='Suivant']")
+        submitBtn: () => cy.get("button[label='Suivant']"),
+        sendDocumentDropdown: () => cy.get("fiducial-pop-up-window-wrapper span:nth-child(2)"),
+        sendDropdownItems: () => cy.get("ul[class^='p-dropdown-items'] li span"),
+        printDocumentBtn: () => cy.get("button[label='Imprimer']"),
+        closeMessageBtn: () => cy.get("[class^='p-toast-icon-close']")
     }
 
     validateWarningMessage(data, client, article) {
+        cy.wait(1500);
         this.elements.createBtn().click({ force: true });
         this.elements.searchClientInput().type(client);
         this.elements.dropDownItems().first().click({ force: true });
         this.documentType(data.documentType);
         this.elements.devisAssocierInput().click({ force: true });
-        this.elements.devisAssocierItems().click({ force: true });
-        this.validateInvoiceResult(article);
-        this.elements.unitPriceInput().type(data.amount);
-        clientPage.saveModal();
+        this.elements.devisAssocierItems().first().click({ force: true });
+        this.elements.unitPriceInput().clear().type(data.amount);
+        this.elements.envoyerBtn().click({ force: true });
         loginPage.getDetailMessage()
             .invoke('text')
             .should('eq', data.expectedWarningMessage);
     }
 
     associateIncoice(client, code) {
-        this.elements.createBtn().click();
+        this.elements.createBtn().click({ force: true });
         this.elements.searchClientInput().type(client);
         this.elements.dropDownItems().first().click({ force: true });
         this.elements.articleAssocierInput().last().type(code);
@@ -55,7 +57,7 @@ class FacturesPage {
     envoyerModal() {
         this.elements.envoyerBtn().click();
         this.elements.submitBtn().click();
-        cy.xpath("(//button[@label='Envoyer'])[2]").click();
+        cy.get("fiducial-pop-up-window-wrapper [label='Envoyer']").click();
     }
 
     documentType(key) {

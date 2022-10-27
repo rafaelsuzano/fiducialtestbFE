@@ -41,7 +41,7 @@ describe('Warning message', () => {
                         facturesPage.associateIncoice(clientName, articleCode)
                     })
 
-                    context('When quote amout is less than the unit price', () => {
+                    context('When the unit price i greater tgha solde', () => {
                         it('Then it should warn the user', () => {
                             var factory = facturesFactory.avoirWarning();
                             facturesPage.validateWarningMessage(factory, clientName, articleCode);

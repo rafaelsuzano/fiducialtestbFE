@@ -7,7 +7,7 @@ export default {
             type: 'produit',
             measure: '㎡',
             articleCode: code,
-            amount: '2000',
+            amount: '200',
             description: 'E2E Script',
             articleFamily: 'MATERIEL INFORMATIQUE'
         }
