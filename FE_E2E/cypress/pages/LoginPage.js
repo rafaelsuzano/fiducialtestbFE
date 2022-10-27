@@ -17,7 +17,7 @@ class LoginPage {
                 this.#elements.password().type(x.invalidPassword.password);
                 this.#elements.submit().click();
                 this.#elements.summary().should('contain', x.invalidPassword.summary);
-                getDetailMessage().should('contain', x.invalidPassword.detail)
+                this.getDetailMessage().should('contain', x.invalidPassword.detail)
             })
     }
 

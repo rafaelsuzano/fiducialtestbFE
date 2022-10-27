@@ -53,6 +53,7 @@ Cypress.Commands.add('expandAndOpenTab', (index, confirm) => {
 
 Cypress.Commands.add('accessMenu', (menuItem) => {
   cy.get("ul li a span").contains(menuItem).click();
+  cy.wait(500);
 })
 
 Cypress.Commands.add('login', (data) => {
@@ -61,6 +62,10 @@ Cypress.Commands.add('login', (data) => {
   cy.get("input[type='password']").type(data.credential.password)
   cy.get("button[type='submit']").click()
   return cy.get("div[class^='companies'] button span");
+})
+
+Cypress.Commands.add('selectDropDownItem', (webElement, target) => {
+  webElement.contains(target, { matchCase: false }).click();
 })
 
 

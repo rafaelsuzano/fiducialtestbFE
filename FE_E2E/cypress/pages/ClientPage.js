@@ -1,4 +1,4 @@
-class AddClientPage {
+class ClientPage {
 
     #elements = {
         createBtn: () => cy.get("div[class^='button-create'] button"),
@@ -50,7 +50,17 @@ class AddClientPage {
         searchTxt: () => cy.get("fiducial-search-input input"),
         invoiceSaved: () => cy.get("table tbody tr td:nth-child(2) strong"),
         sirenInput: () => cy.get("fiducial-client-enterprise-siren-finder input"),
-        sirenSelection: () => cy.get("fiducial-client-enterprise-siret-selection .pb-1")
+        sirenSelection: () => cy.get("fiducial-client-enterprise-siret-selection .pb-1"),
+        tableNonColumn: () => cy.get("fiducial-content-state table td:nth-child(2) strong")
+    }
+
+    addParticulierClient(data) {
+        this.fillParticulierForm(data)
+            .each(($el, index, arr) => {
+                arr.push($el.text().toLowerCase());
+            }).then((arr) => {
+                expect(arr.toArray()).includes(data.expectedResult.toLowerCase());
+            })
     }
 
     fillParticulierForm(data) {
@@ -68,11 +78,11 @@ class AddClientPage {
         this.#fillBillingContactForm(data);
         this.#fillBillingAddress(data);
         this.#elements.sauvegarderBtn().click();
-        this.#elements.searchTxt().type(data.clientInfo.firstName);
+        this.searchItem(data.clientInfo.firstName);
         return this.#elements.invoiceSaved();
     }
 
-    fillEntrepriseForm(data){
+    fillEntrepriseForm(data) {
         this.clickOnCreateBtn();
         this.fillEntrepriseModal(data);
         this.#elements.infoClientForm.email().type(data.clientInfo.email);
@@ -115,11 +125,23 @@ class AddClientPage {
 
     clickOnCreateBtn() {
         this.#elements.createBtn().click();
-        this.#elements.clientBtn().click();
+        //this.#elements.clientBtn().click();
+        this.#elements.clientBtn().then($btn => {
+            if ($btn.is(':visible'))
+                cy.wrap($btn).click();
+        })
     }
 
-    saveModal(){
+    getClientNome(){
+        return this.#elements.tableNonColumn();
+    }
+
+    saveModal() {
         this.#elements.sauvegarderBtn().click();
+    }
+
+    searchItem(data){
+        this.#elements.searchTxt().type(data);
     }
 
     selectClientType(key) {
@@ -171,4 +193,4 @@ class AddClientPage {
     }
 }
 
-export default new AddClientPage;
+export default new ClientPage;
