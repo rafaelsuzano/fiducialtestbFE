@@ -37,7 +37,7 @@ describe('Invoice warning message validation', () => {
                 context('And invoice is associated', () => {
                     beforeEach(() => {
                         cy.accessMenu("Factures");
-                        facturesPage.associateIncoice(clientName, articleCode)
+                        facturesPage.associateInvoice(clientName, articleCode)
                     })
 
                     context('When the article unit price is greater than solde', () => {
