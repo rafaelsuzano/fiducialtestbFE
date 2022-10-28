@@ -44,7 +44,7 @@ class FacturesPage {
             .should('eq', data.expectedWarningMessage);
     }
 
-    associateIncoice(client, code) {
+    associateInvoice(client, code) {
         this.elements.createBtn().click({ force: true });
         this.elements.searchClientInput().type(client);
         this.elements.dropDownItems().first().click({ force: true });
