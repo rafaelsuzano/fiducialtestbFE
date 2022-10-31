@@ -1,15 +1,26 @@
 export default {
 
     article: () => {
-        var code = `E2E${Cypress._.random(0, 1e6)}`
+        var code = Cypress._.random(0, 1e6);
         return {
-            productDescription: 'Cisco WiFi Router',
-            type: 'produit',
-            measure: '㎡',
-            articleCode: code,
-            amount: '200',
-            description: 'E2E Script',
-            articleFamily: 'MATERIEL INFORMATIQUE'
+            warning: {
+                productDescription: 'Cisco WiFi Router',
+                type: 'produit',
+                measure: '㎡',
+                articleCode: `E2E${code}`,
+                amount: '200',
+                description: 'E2E Script',
+                articleFamily: 'MATERIEL INFORMATIQUE'
+            },
+            regression: {
+                products: ["FORMATION LOGICIEL", "ORDINATEUR"],
+                type: ["service", "produit"],
+                measure: '㎡',
+                articleCode: [`FORL${code}`, `ORDI${code}`],
+                amount: ["250", "1000"],
+                description: 'E2E Script',
+                articleFamily: ["formation", "matériel"]
+            }
         }
     }
 }
