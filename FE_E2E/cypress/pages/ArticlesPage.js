@@ -24,7 +24,7 @@ class ArticlesPage {
     }
 
     addArticle(data) {
-        this.fillArticle(data);
+        return this.fillArticle(data);
     }
 
     fillArticle(data) {
@@ -77,7 +77,8 @@ class ArticlesPage {
         clientPage.searchItem(articleCode);
         this.elements.codeResult()
             .should('be.visible')
-            .and('have.text', articleCode)
+            .and('have.text', articleCode);
+        return articleCode;
     }
 
     getCode() {

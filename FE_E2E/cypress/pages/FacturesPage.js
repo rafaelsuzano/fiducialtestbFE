@@ -13,6 +13,7 @@ class FacturesPage {
             factureRecurrente: () => cy.get("fiducial-invoice-type p-radiobutton[label*='recurrente'] div div:nth-child(2)"),
             factureAvoir: () => cy.get("fiducial-invoice-type p-radiobutton[label*='Avoir'] div div:nth-child(2)")
         },
+        objetInput: () => cy.get('fiducial-document-info-avoir input'),
         devisAssocierInput: () => cy.get("fiducial-search-input:nth-child(3) input"),
         devisAssocierItems: () => cy.get("p-table cdk-virtual-scroll-viewport table tbody td strong"),
         articleAssocierInput: () => cy.get("fiducial-search-input:nth-child(2) input"),
@@ -35,7 +36,7 @@ class FacturesPage {
         this.elements.searchClientInput().type(client);
         this.elements.dropDownItems().first().click({ force: true });
         this.documentType(data.documentType);
-        this.elements.devisAssocierInput().click({ force: true });
+        this.elements.devisAssocierInput().scrollIntoView().click({ force: true });
         this.elements.devisAssocierItems().first().click({ force: true });
         this.elements.unitPriceInput().clear().type(data.amount);
         this.elements.envoyerBtn().click({ force: true });
@@ -44,10 +45,23 @@ class FacturesPage {
             .should('eq', data.expectedWarningMessage);
     }
 
-    associateInvoice(client, code) {
+    validateInvoice(data, client){
+        cy.wait(2500);
         this.elements.createBtn().click({ force: true });
         this.elements.searchClientInput().type(client);
         this.elements.dropDownItems().first().click({ force: true });
+        this.documentType(data.documentType);
+        this.elements.objetInput().type(data.goal)
+        this.elements.devisAssocierInput().click({ force: true });
+        this.elements.devisAssocierItems().first().click({ force: true });
+        // this.elements.unitPriceInput().clear().type(data.amount);
+        //this.elements.envoyerBtn().click({ force: true });
+    }
+
+    associateInvoice(client, code) {
+        this.elements.createBtn().click({ force: true });
+        this.elements.searchClientInput().type(client);
+        this.elements.dropDownItems().first().scrollIntoView().click({ force: true });
         this.elements.articleAssocierInput().last().type(code);
         this.elements.dropDownItems().first().click({ force: true });
         //this.elements.articleCodeLabel().first().should('be.visible');
