@@ -30,7 +30,7 @@ class FacturesPage {
     }
 
     validateWarningMessage(data, client, article) {
-        cy.wait(1500);
+        cy.wait(2500);
         this.elements.createBtn().click({ force: true });
         this.elements.searchClientInput().type(client);
         this.elements.dropDownItems().first().click({ force: true });

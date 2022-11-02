@@ -30,8 +30,8 @@ describe('Invoice warning message validation', () => {
                 beforeEach(() => {
                     cy.accessMenu("Articles");
                     var article = articleFactory.article();
-                    articlesPage.addArticle(article);
-                    articleCode = article.articleCode;
+                    articlesPage.addArticle(article.warning);
+                    articleCode = article.warning.articleCode;
                 })
 
                 context('And invoice is associated', () => {
