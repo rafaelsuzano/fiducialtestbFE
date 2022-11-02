@@ -75,7 +75,9 @@ class ArticlesPage {
 
         clientPage.saveModal();
         clientPage.searchItem(articleCode);
-        return this.elements.codeResult();
+        this.elements.codeResult()
+            .should('be.visible')
+            .and('have.text', articleCode)
     }
 
     getCode() {
