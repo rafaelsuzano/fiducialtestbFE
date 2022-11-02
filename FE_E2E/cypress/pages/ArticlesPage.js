@@ -24,12 +24,7 @@ class ArticlesPage {
     }
 
     addArticle(data) {
-        this.fillArticle(data)
-        // .each(($el, index, arr) => {
-        //     arr.push($el.text().toLowerCase());
-        // }).then((arr) => {
-        //     expect(arr.toArray()).includes(data.articleCode.toLowerCase());
-        // })
+        this.fillArticle(data);
     }
 
     fillArticle(data) {
@@ -64,18 +59,25 @@ class ArticlesPage {
         this.elements.description().type(description);
         this.elements.articleFamily().type(articleFamily);
 
-        this.elements.selectFamily().each(($el, index, arr) => {
-            arr.push($el.text().toLowerCase().trim());
-        }).then((arr) => {
-            if (arr.toArray().includes(articleFamily.toLowerCase())) {
-                this.elements.selectFamily().first().click();
-            } else {
-                this.createFamilyEntite(articleFamily);
+        let found = false
+        this.elements.selectFamily().each(($el, i) => {
+            i++;
+            const item = `cdk-virtual-scroll-viewport table tbody tr:nth-child(${i})`;
+            if ($el.text().toLowerCase().trim() === articleFamily.toLowerCase()) {
+                cy.get(item).click();
+                found = true;
+            }
+        }).then(() => {
+            if (!found) {
+                this.createFamilyEntite(articleFamily)
             }
         })
 
         clientPage.saveModal();
-        return this.elements.codeResult();
+        clientPage.searchItem(articleCode);
+        this.elements.codeResult()
+            .should('be.visible')
+            .and('have.text', articleCode)
     }
 
     getCode() {
@@ -103,4 +105,5 @@ class ArticlesPage {
 }
 
 export default new ArticlesPage;
+
 
