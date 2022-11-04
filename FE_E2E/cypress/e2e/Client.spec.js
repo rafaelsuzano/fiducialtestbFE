@@ -27,6 +27,7 @@ describe('test', () => {
 
                 context('And article is created', () => {
                     beforeEach(function () {
+                        debugger
                         cy.accessMenu("Articles");
                         articlesPage.addArticle(this.articles.properties.regression);
                     })
@@ -42,3 +43,4 @@ describe('test', () => {
             })
         })
     })
+})

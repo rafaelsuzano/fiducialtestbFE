@@ -3,7 +3,7 @@
         "clientInfo": {
             "clientType": "particulier",
             "greeting": "madame",
-            "firstName": "YesAccountClientTest",
+            "firstName": "YesAccountClient",
             "lastName": "E2E",
             "email": "fiducial@fiducial.net",
             "firstPhone": "351-700-555-102",

@@ -15,7 +15,7 @@ class ArticlesPage {
         description: () => cy.get("[formcontrolname='description']"),
         articleFamily: () => cy.get("fiducial-article-families-selection fiducial-search-input input"),
         selectFamily: () => cy.get("cdk-virtual-scroll-viewport table tbody span"),
-        codeResult: () => cy.get("table tbody tr td:nth-child(3) strong"),
+        codeResult: () => cy.get("table tbody tr:nth-child(1) td:nth-child(3) strong"),
         entity: {
             createBtn: () => cy.get("fiducial-create-new-entity-button button"),
             name: () => cy.get("input[id='name']"),
@@ -24,51 +24,36 @@ class ArticlesPage {
     }
 
     addArticle(data) {
-        let found = false;
-        this.searchItem(articleCode);
-        this.elements.nomItem().then(($el) => {
-            let text = $el.text().toLowerCase().trim().split(" ");
-            if (text[0] === a.toLowerCase()) {
-                found = true;
-            }
-        }).then(() => {
-            if (!found) {
-                this.fillArticle(data);
-            }
-        })
+        this.fillArticle(data);
     }
 
     fillArticle(data) {
         let type, productDescription, measure, articleCode, amount, description, articleFamily
-        if (data.products instanceof Array) {
-            var index = Math.floor(Math.random() * data.products.length);
-            type = data.type[index];
-            productDescription = data.products[index];
-            measure = data.measure;
-            articleCode = data.articleCode[index];
-            amount = data.amount[index];
-            description = data.description
-            articleFamily = data.articleFamily[index]
-        } else {
-            type = data.type;
-            productDescription = data.productDescription;
-            measure = data.measure;
-            articleCode = data.articleCode;
-            amount = data.amount;
-            description = data.description;
-            articleFamily = data.articleFamily;
-        }
+        var index = Math.floor(Math.random() * data.products.length);
+        type = data.type[index];
+        productDescription = data.products[index];
+        measure = data.measure;
+        articleCode = data.articleCode[index];
+        amount = data.amount[index];
+        description = data.description
+        articleFamily = data.articleFamily[index]
 
+        debugger
         let found = false;
-        this.searchItem(articleCode);
-        this.elements.nomItem().then(($el) => {
+        clientPage.searchItem(articleCode);
+        cy.wait(1000);
+        debugger
+        this.elements.codeResult().then(($el) => {
             let text = $el.text().toLowerCase().trim();
+            debugger
             if (text === articleCode.toLowerCase()) {
                 found = true;
+                debugger
                 expect(text).to.equals(articleCode.toLowerCase())
             }
         }).then(() => {
             if (!found) {
+                debugger
                 clientPage.clickOnCreateBtn();
                 this.articleType(type);
                 this.elements.designationInput().type(productDescription);
