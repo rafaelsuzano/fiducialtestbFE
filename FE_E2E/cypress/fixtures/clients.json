@@ -1,0 +1,33 @@
+{
+    "properties": {
+        "clientInfo": {
+            "clientType": "particulier",
+            "greeting": "madame",
+            "firstName": "YesAccountClientTest",
+            "lastName": "E2E",
+            "email": "fiducial@fiducial.net",
+            "firstPhone": "351-700-555-102",
+            "secondPhone": "351-655-525-489"
+        },
+        "requiredInfo": {
+            "delay": "60 jours",
+            "clientCode": "12345678"
+        },
+        "billingContact": {
+            "greeting": "madame",
+            "name": "Julie",
+            "surname": "Billot",
+            "mobile": "0612345678",
+            "email": "test@gmail.com",
+            "department": "QA"
+        },
+        "billingAddress": {
+            "number": "10",
+            "address": "rue des mimosas",
+            "extention": "IT",
+            "zipCode": "06000",
+            "city": "Nice",
+            "country": "france"
+        }
+    }
+}

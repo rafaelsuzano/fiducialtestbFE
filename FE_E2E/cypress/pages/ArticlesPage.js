@@ -24,7 +24,18 @@ class ArticlesPage {
     }
 
     addArticle(data) {
-        return this.fillArticle(data);
+        let found = false;
+        this.searchItem(articleCode);
+        this.elements.nomItem().then(($el) => {
+            let text = $el.text().toLowerCase().trim().split(" ");
+            if (text[0] === a.toLowerCase()) {
+                found = true;
+            }
+        }).then(() => {
+            if (!found) {
+                this.fillArticle(data);
+            }
+        })
     }
 
     fillArticle(data) {
@@ -48,37 +59,34 @@ class ArticlesPage {
             articleFamily = data.articleFamily;
         }
 
-        clientPage.clickOnCreateBtn();
-        this.articleType(type);
-        this.elements.designationInput().type(productDescription);
-        this.elements.expandItems().first().click();
-        this.elements.selectItems().
-            contains(measure, { matchCase: false }).click();
-        this.elements.codeInput().type(articleCode);
-        this.elements.montantInput().clear().type(amount);
-        this.elements.description().type(description);
-        this.elements.articleFamily().type(articleFamily);
-
-        let found = false
-        this.elements.selectFamily().each(($el, i) => {
-            i++;
-            const item = `cdk-virtual-scroll-viewport table tbody tr:nth-child(${i})`;
-            if ($el.text().toLowerCase().trim() === articleFamily.toLowerCase()) {
-                cy.get(item).click();
+        let found = false;
+        this.searchItem(articleCode);
+        this.elements.nomItem().then(($el) => {
+            let text = $el.text().toLowerCase().trim();
+            if (text === articleCode.toLowerCase()) {
                 found = true;
+                expect(text).to.equals(articleCode.toLowerCase())
             }
         }).then(() => {
             if (!found) {
-                this.createFamilyEntite(articleFamily)
+                clientPage.clickOnCreateBtn();
+                this.articleType(type);
+                this.elements.designationInput().type(productDescription);
+                this.elements.expandItems().first().click();
+                this.elements.selectItems().
+                    contains(measure, { matchCase: false }).click();
+                this.elements.codeInput().type(articleCode);
+                this.elements.montantInput().clear().type(amount);
+                this.elements.description().type(description);
+                this.elements.articleFamily().type(articleFamily);
+                this.selectFamily(articleFamily);
+                clientPage.saveModal();
+                clientPage.searchItem(articleCode);
+                this.elements.codeResult()
+                    .should('be.visible')
+                    .and('have.text', articleCode);
             }
         })
-
-        clientPage.saveModal();
-        clientPage.searchItem(articleCode);
-        this.elements.codeResult()
-            .should('be.visible')
-            .and('have.text', articleCode);
-        return articleCode;
     }
 
     getCode() {
@@ -96,6 +104,22 @@ class ArticlesPage {
             default:
                 throw Error(`Unknown ${key} type.`);
         }
+    }
+
+    selectFamily(articleFamily) {
+        let found = false
+        this.elements.selectFamily().each(($el, i) => {
+            i++;
+            const item = `cdk-virtual-scroll-viewport table tbody tr:nth-child(${i})`;
+            if ($el.text().toLowerCase().trim() === articleFamily.toLowerCase()) {
+                cy.get(item).click();
+                found = true;
+            }
+        }).then(() => {
+            if (!found) {
+                this.createFamilyEntite(articleFamily)
+            }
+        })
     }
 
     createFamilyEntite(entity) {

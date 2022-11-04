@@ -68,6 +68,24 @@ Cypress.Commands.add('selectDropDownItem', (webElement, target) => {
   webElement.contains(target, { matchCase: false }).click();
 })
 
+Cypress.Commands.add('addItem', (searchItem, element) => {
+  debugger
+  let found = false;
+  cy.get("fiducial-search-input input").clear().type(searchItem);
+  cy.get(element).then(($el) => {
+    let text = $el.text().toLowerCase().trim().split(" ");
+    debugger
+    console.log(text[0]);
+    if (text[0] === searchItem.toLowerCase()) {
+      debugger
+      found = true;
+    }
+  }).then(() => {
+    debugger
+    return found;
+  })
+})
+
 
 
 

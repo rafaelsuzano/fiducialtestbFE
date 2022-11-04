@@ -9,11 +9,11 @@ describe('Add two clients', () => {
     context('Given that user successfully signed up', () => {
         beforeEach(() => {
             cy
-                .fixture('data')
-                .then(data => {
-                    cy.login(data)
+                .fixture('credentials')
+                .then(x => {
+                    cy.login(x)
                         .invoke('text')
-                        .should('eq', data.credential.loginPassed);
+                        .should('eq', x.credential.loginPassed);
                 })
         })
 

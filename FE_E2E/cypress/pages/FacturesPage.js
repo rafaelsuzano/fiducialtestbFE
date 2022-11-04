@@ -6,7 +6,7 @@ class FacturesPage {
         createBtn: () => cy.get("button[label='Créer']"),
         searchClientInput: () => cy.get("fiducial-clients-selection input"),
         createNewClientBtn: () => cy.get("fiducial-create-new-entity-button button"),
-        dropDownItems: () => cy.get("table tbody td span"),
+        dropDownItems: () => cy.get("cdk-virtual-scroll-viewport table tbody td span"),
         documentType: {
             factureSimple: () => cy.get("fiducial-invoice-type p-radiobutton[label*='simple'] div div:nth-child(2)"),
             factureAcompte: () => cy.get("fiducial-invoice-type p-radiobutton[label*='Acompte'] div div:nth-child(2)"),
@@ -64,7 +64,7 @@ class FacturesPage {
         this.elements.dropDownItems().first().scrollIntoView().click({ force: true });
         this.elements.articleAssocierInput().last().type(code);
         this.elements.dropDownItems().first().click({ force: true });
-        //this.elements.articleCodeLabel().first().should('be.visible');
+        this.elements.articleCodeLabel().first().should('be.visible');
         this.envoyerModal();
     }
 
@@ -100,6 +100,23 @@ class FacturesPage {
             }).then((arr) => {
                 expect(arr.toArray()).includes(artice.toLowerCase())
             })
+    }
+
+    selectDropdownItem(typeElement, elements, select, targetWord){
+        debugger
+        typeElement.scrollIntoView().type(targetWord);        
+        let found = false
+        elements.each(($el, i) => {
+            i++;
+            if ($el.text().toLowerCase().trim() === targetWord.toLowerCase()) {
+                cy.get(`${select}:nth-child(${i})`).click();
+                found = true;
+            }
+        }).then((element) => {
+            if (!found) {
+                throw new Error(`${element} not found!`)
+            }
+        })
     }
 }
 

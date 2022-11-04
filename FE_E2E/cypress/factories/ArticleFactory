@@ -16,7 +16,7 @@ export default {
                 products: ["FORMATION LOGICIEL", "ORDINATEUR"],
                 type: ["service", "produit"],
                 measure: '㎡',
-                articleCode: [`FORL${code}`, `ORDI${code}`],
+                articleCode: ["FORL1", "ORDI1"],
                 amount: ["250", "1000"],
                 description: 'E2E Script',
                 articleFamily: ["formation", "matériel"]

@@ -11,7 +11,7 @@ class LoginPage {
     invalidPassword() {
         cy.visit('/');
         cy
-            .fixture('data')
+            .fixture('credentials')
             .then(x => {
                 this.#elements.email().type(x.credential.email);
                 this.#elements.password().type(x.invalidPassword.password);

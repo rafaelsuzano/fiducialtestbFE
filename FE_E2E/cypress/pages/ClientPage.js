@@ -48,7 +48,7 @@ class ClientPage {
         },
         header: () => cy.get("h2:last-of-type"),
         searchTxt: () => cy.get("fiducial-search-input input"),
-        invoiceSaved: () => cy.get("table tbody tr td:nth-child(2) strong"),
+        nomItem: () => cy.get("table tbody tr:nth-child(1) td:nth-child(2) strong"),
         sirenInput: () => cy.get("fiducial-client-enterprise-siren-finder input"),
         sirenSelection: () => cy.get("fiducial-client-enterprise-siret-selection .pb-1"),
         tableNonColumn: () => cy.get("fiducial-content-state table td:nth-child(2) strong")
@@ -63,23 +63,39 @@ class ClientPage {
             })
     }
 
+    addClient(data) {
+        let found = false;
+        this.searchItem(data.properties.clientInfo.firstName);
+        this.#elements.nomItem().then(($el) => {
+            let text = $el.text().toLowerCase().trim().split(" ");
+            if (text[0] === data.properties.clientInfo.firstName.toLowerCase()) {
+                found = true;
+                expect(text[0]).to.equals(data.properties.clientInfo.firstName.toLowerCase())
+            }
+        }).then(() => {
+            if (!found) {
+                this.fillParticulierForm(data);
+            }
+        })
+    }
+
     fillParticulierForm(data) {
         this.clickOnCreateBtn();
-        this.selectClientType(data.clientInfo.clientType);
+        this.selectClientType(data.properties.clientInfo.clientType);
         this.#elements.continueBtn().click();
-        this.salutationClientType(data.billingContact.greeting);
-        this.#elements.infoClientForm.name().type(data.clientInfo.firstName);
-        this.#elements.infoClientForm.surname().type(data.clientInfo.lastName);
-        this.#elements.infoClientForm.email().type(data.clientInfo.email);
-        this.#elements.infoClientForm.telephone().type(data.clientInfo.firstPhone);
-        this.#elements.infoClientForm.secondaryPhone().type(data.clientInfo.secondPhone);
+        this.salutationClientType(data.properties.billingContact.greeting);
+        this.#elements.infoClientForm.name().type(data.properties.clientInfo.firstName);
+        this.#elements.infoClientForm.surname().type(data.properties.clientInfo.lastName);
+        this.#elements.infoClientForm.email().type(data.properties.clientInfo.email);
+        this.#elements.infoClientForm.telephone().type(data.properties.clientInfo.firstPhone);
+        this.#elements.infoClientForm.secondaryPhone().type(data.properties.clientInfo.secondPhone);
         this.#fillRequeredForm(data);
-        this.salutationBillingType(data.billingContact.greeting);
+        this.salutationBillingType(data.properties.billingContact.greeting);
         this.#fillBillingContactForm(data);
         this.#fillBillingAddress(data);
         this.#elements.sauvegarderBtn().click();
-        this.searchItem(data.clientInfo.firstName);
-        return this.#elements.invoiceSaved();
+        this.searchItem(data.properties.clientInfo.firstName);
+        return this.#elements.nomItem();
     }
 
     fillEntrepriseForm(data) {
@@ -100,27 +116,27 @@ class ClientPage {
 
     #fillRequeredForm(data) {
         this.#elements.requiredForm.expandPaymentDelay().click({ force: true });
-        this.#elements.requiredForm.items().contains(data.requiredInfo.delay).click();
+        this.#elements.requiredForm.items().contains(data.properties.requiredInfo.delay).click();
         // this.#elements.requiredForm.clienteCode().type(data.requiredInfo.clientCode)
     }
 
     #fillBillingContactForm(data) {
-        this.#elements.billingContactForm.name().type(data.billingContact.name);
-        this.#elements.billingContactForm.surname().type(data.billingContact.surname);
-        this.#elements.billingContactForm.department().type(data.billingContact.department);
-        this.#elements.billingContactForm.email().type(data.billingContact.email);
-        this.#elements.billingContactForm.mobile().type(data.billingContact.mobile);
+        this.#elements.billingContactForm.name().type(data.properties.billingContact.name);
+        this.#elements.billingContactForm.surname().type(data.properties.billingContact.surname);
+        this.#elements.billingContactForm.department().type(data.properties.billingContact.department);
+        this.#elements.billingContactForm.email().type(data.properties.billingContact.email);
+        this.#elements.billingContactForm.mobile().type(data.properties.billingContact.mobile);
     }
 
     #fillBillingAddress(data) {
-        this.#elements.billingAddressForm.number().type(data.billingAddress.number);
-        this.#elements.billingAddressForm.address().type(data.billingAddress.address);
-        this.#elements.billingAddressForm.addressExtention().type(data.billingAddress.extention);
-        this.#elements.billingAddressForm.postalCode().type(data.billingAddress.zipCode);
-        this.#elements.billingAddressForm.city().type(data.billingAddress.city);
+        this.#elements.billingAddressForm.number().type(data.properties.billingAddress.number);
+        this.#elements.billingAddressForm.address().type(data.properties.billingAddress.address);
+        this.#elements.billingAddressForm.addressExtention().type(data.properties.billingAddress.extention);
+        this.#elements.billingAddressForm.postalCode().type(data.properties.billingAddress.zipCode);
+        this.#elements.billingAddressForm.city().type(data.properties.billingAddress.city);
         this.#elements.billingAddressForm.expandCountry().click({ force: true });
         this.#elements.billingAddressForm.contries().
-            contains(data.billingAddress.country, { matchCase: false }).click();
+            contains(data.properties.billingAddress.country, { matchCase: false }).click();
     }
 
     clickOnCreateBtn() {
@@ -132,7 +148,7 @@ class ClientPage {
         })
     }
 
-    getClientNome(){
+    getClientNome() {
         return this.#elements.tableNonColumn();
     }
 
@@ -140,8 +156,8 @@ class ClientPage {
         this.#elements.sauvegarderBtn().click();
     }
 
-    searchItem(data){
-        this.#elements.searchTxt().type(data);
+    searchItem(data) {
+        this.#elements.searchTxt().clear().type(data);
     }
 
     selectClientType(key) {
