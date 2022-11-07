@@ -158,6 +158,7 @@ class ClientPage {
 
     searchItem(data) {
         this.#elements.searchTxt().clear().type(data);
+        cy.wait(2000);
     }
 
     selectClientType(key) {
